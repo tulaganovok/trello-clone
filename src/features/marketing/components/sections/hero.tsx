@@ -4,7 +4,7 @@ import { CirclePlay } from 'lucide-react'
 
 export default function Hero() {
   return (
-    <div className="bg-secondary">
+    <section className="bg-secondary">
       <div className="w-full pt-24 md:pt-32 grid grid-cols-1 md:grid-cols-2 px-4 md:px-12 lg:px-20 xl:px-28 2xl:px-32">
         <div className="flex flex-col justify-start md:ml-24 pt-12">
           <h1 className="text-2xl max-md:text-center md:text-4xl font-semibold leading-10 md:leading-14 md:mt-2">
@@ -46,6 +46,6 @@ export default function Hero() {
           </video>
         </div>
       </div>
-    </div>
+    </section>
   )
 }
