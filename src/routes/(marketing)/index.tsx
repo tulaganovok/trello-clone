@@ -1,5 +1,6 @@
-import AIPromotion from '#/components/features/marketing/ai-promotion'
-import HeroSection from '#/components/features/marketing/sections/hero.section'
+import AIPromotion from '#/features/marketing/components/ai-promotion'
+import OnboardingCarousel from '#/features/marketing/components/sections/about'
+import Hero from '#/features/marketing/components/sections/hero'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/(marketing)/')({
@@ -10,7 +11,8 @@ function MarketingPage() {
   return (
     <>
       <AIPromotion />
-      <HeroSection />
+      <Hero />
+      <OnboardingCarousel />
     </>
   )
 }
