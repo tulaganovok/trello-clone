@@ -39,7 +39,7 @@ export default function SignUpForm() {
           const user = res.data?.user!
 
           await createWorkSpaceFn({
-            data: { userId: user.id, title: `${user.name}'s workspace` },
+            data: { userId: user.id, name: `Trello workspace`, type: 'Organization' },
           })
 
           navigate({ to: '/boards' })

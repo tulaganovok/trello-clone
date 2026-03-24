@@ -26,19 +26,25 @@ export type AggregateWorkspace = {
 
 export type WorkspaceMinAggregateOutputType = {
   id: string | null
-  title: string | null
+  name: string | null
+  type: string | null
+  description: string | null
   userId: string | null
 }
 
 export type WorkspaceMaxAggregateOutputType = {
   id: string | null
-  title: string | null
+  name: string | null
+  type: string | null
+  description: string | null
   userId: string | null
 }
 
 export type WorkspaceCountAggregateOutputType = {
   id: number
-  title: number
+  name: number
+  type: number
+  description: number
   userId: number
   _all: number
 }
@@ -46,19 +52,25 @@ export type WorkspaceCountAggregateOutputType = {
 
 export type WorkspaceMinAggregateInputType = {
   id?: true
-  title?: true
+  name?: true
+  type?: true
+  description?: true
   userId?: true
 }
 
 export type WorkspaceMaxAggregateInputType = {
   id?: true
-  title?: true
+  name?: true
+  type?: true
+  description?: true
   userId?: true
 }
 
 export type WorkspaceCountAggregateInputType = {
   id?: true
-  title?: true
+  name?: true
+  type?: true
+  description?: true
   userId?: true
   _all?: true
 }
@@ -137,7 +149,9 @@ export type WorkspaceGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
 
 export type WorkspaceGroupByOutputType = {
   id: string
-  title: string
+  name: string
+  type: string
+  description: string | null
   userId: string
   _count: WorkspaceCountAggregateOutputType | null
   _min: WorkspaceMinAggregateOutputType | null
@@ -164,7 +178,9 @@ export type WorkspaceWhereInput = {
   OR?: Prisma.WorkspaceWhereInput[]
   NOT?: Prisma.WorkspaceWhereInput | Prisma.WorkspaceWhereInput[]
   id?: Prisma.StringFilter<"Workspace"> | string
-  title?: Prisma.StringFilter<"Workspace"> | string
+  name?: Prisma.StringFilter<"Workspace"> | string
+  type?: Prisma.StringFilter<"Workspace"> | string
+  description?: Prisma.StringNullableFilter<"Workspace"> | string | null
   userId?: Prisma.StringFilter<"Workspace"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   boards?: Prisma.BoardListRelationFilter
@@ -172,7 +188,9 @@ export type WorkspaceWhereInput = {
 
 export type WorkspaceOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  title?: Prisma.SortOrder
+  name?: Prisma.SortOrder
+  type?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   boards?: Prisma.BoardOrderByRelationAggregateInput
@@ -183,7 +201,9 @@ export type WorkspaceWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.WorkspaceWhereInput | Prisma.WorkspaceWhereInput[]
   OR?: Prisma.WorkspaceWhereInput[]
   NOT?: Prisma.WorkspaceWhereInput | Prisma.WorkspaceWhereInput[]
-  title?: Prisma.StringFilter<"Workspace"> | string
+  name?: Prisma.StringFilter<"Workspace"> | string
+  type?: Prisma.StringFilter<"Workspace"> | string
+  description?: Prisma.StringNullableFilter<"Workspace"> | string | null
   userId?: Prisma.StringFilter<"Workspace"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   boards?: Prisma.BoardListRelationFilter
@@ -191,7 +211,9 @@ export type WorkspaceWhereUniqueInput = Prisma.AtLeast<{
 
 export type WorkspaceOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  title?: Prisma.SortOrder
+  name?: Prisma.SortOrder
+  type?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
   _count?: Prisma.WorkspaceCountOrderByAggregateInput
   _max?: Prisma.WorkspaceMaxOrderByAggregateInput
@@ -203,52 +225,68 @@ export type WorkspaceScalarWhereWithAggregatesInput = {
   OR?: Prisma.WorkspaceScalarWhereWithAggregatesInput[]
   NOT?: Prisma.WorkspaceScalarWhereWithAggregatesInput | Prisma.WorkspaceScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Workspace"> | string
-  title?: Prisma.StringWithAggregatesFilter<"Workspace"> | string
+  name?: Prisma.StringWithAggregatesFilter<"Workspace"> | string
+  type?: Prisma.StringWithAggregatesFilter<"Workspace"> | string
+  description?: Prisma.StringNullableWithAggregatesFilter<"Workspace"> | string | null
   userId?: Prisma.StringWithAggregatesFilter<"Workspace"> | string
 }
 
 export type WorkspaceCreateInput = {
   id?: string
-  title: string
+  name: string
+  type: string
+  description?: string | null
   user: Prisma.UserCreateNestedOneWithoutWorkspacesInput
   boards?: Prisma.BoardCreateNestedManyWithoutWorksapceInput
 }
 
 export type WorkspaceUncheckedCreateInput = {
   id?: string
-  title: string
+  name: string
+  type: string
+  description?: string | null
   userId: string
   boards?: Prisma.BoardUncheckedCreateNestedManyWithoutWorksapceInput
 }
 
 export type WorkspaceUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutWorkspacesNestedInput
   boards?: Prisma.BoardUpdateManyWithoutWorksapceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   boards?: Prisma.BoardUncheckedUpdateManyWithoutWorksapceNestedInput
 }
 
 export type WorkspaceCreateManyInput = {
   id?: string
-  title: string
+  name: string
+  type: string
+  description?: string | null
   userId: string
 }
 
 export type WorkspaceUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type WorkspaceUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -264,19 +302,25 @@ export type WorkspaceOrderByRelationAggregateInput = {
 
 export type WorkspaceCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  title?: Prisma.SortOrder
+  name?: Prisma.SortOrder
+  type?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   userId?: Prisma.SortOrder
 }
 
 export type WorkspaceMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  title?: Prisma.SortOrder
+  name?: Prisma.SortOrder
+  type?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   userId?: Prisma.SortOrder
 }
 
 export type WorkspaceMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  title?: Prisma.SortOrder
+  name?: Prisma.SortOrder
+  type?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   userId?: Prisma.SortOrder
 }
 
@@ -343,13 +387,17 @@ export type WorkspaceUpdateOneRequiredWithoutBoardsNestedInput = {
 
 export type WorkspaceCreateWithoutUserInput = {
   id?: string
-  title: string
+  name: string
+  type: string
+  description?: string | null
   boards?: Prisma.BoardCreateNestedManyWithoutWorksapceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutUserInput = {
   id?: string
-  title: string
+  name: string
+  type: string
+  description?: string | null
   boards?: Prisma.BoardUncheckedCreateNestedManyWithoutWorksapceInput
 }
 
@@ -384,19 +432,25 @@ export type WorkspaceScalarWhereInput = {
   OR?: Prisma.WorkspaceScalarWhereInput[]
   NOT?: Prisma.WorkspaceScalarWhereInput | Prisma.WorkspaceScalarWhereInput[]
   id?: Prisma.StringFilter<"Workspace"> | string
-  title?: Prisma.StringFilter<"Workspace"> | string
+  name?: Prisma.StringFilter<"Workspace"> | string
+  type?: Prisma.StringFilter<"Workspace"> | string
+  description?: Prisma.StringNullableFilter<"Workspace"> | string | null
   userId?: Prisma.StringFilter<"Workspace"> | string
 }
 
 export type WorkspaceCreateWithoutBoardsInput = {
   id?: string
-  title: string
+  name: string
+  type: string
+  description?: string | null
   user: Prisma.UserCreateNestedOneWithoutWorkspacesInput
 }
 
 export type WorkspaceUncheckedCreateWithoutBoardsInput = {
   id?: string
-  title: string
+  name: string
+  type: string
+  description?: string | null
   userId: string
 }
 
@@ -418,36 +472,48 @@ export type WorkspaceUpdateToOneWithWhereWithoutBoardsInput = {
 
 export type WorkspaceUpdateWithoutBoardsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutWorkspacesNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutBoardsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type WorkspaceCreateManyUserInput = {
   id?: string
-  title: string
+  name: string
+  type: string
+  description?: string | null
 }
 
 export type WorkspaceUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   boards?: Prisma.BoardUpdateManyWithoutWorksapceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   boards?: Prisma.BoardUncheckedUpdateManyWithoutWorksapceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -483,7 +549,9 @@ export type WorkspaceCountOutputTypeCountBoardsArgs<ExtArgs extends runtime.Type
 
 export type WorkspaceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  title?: boolean
+  name?: boolean
+  type?: boolean
+  description?: boolean
   userId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   boards?: boolean | Prisma.Workspace$boardsArgs<ExtArgs>
@@ -492,25 +560,31 @@ export type WorkspaceSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
 
 export type WorkspaceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  title?: boolean
+  name?: boolean
+  type?: boolean
+  description?: boolean
   userId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["workspace"]>
 
 export type WorkspaceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  title?: boolean
+  name?: boolean
+  type?: boolean
+  description?: boolean
   userId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["workspace"]>
 
 export type WorkspaceSelectScalar = {
   id?: boolean
-  title?: boolean
+  name?: boolean
+  type?: boolean
+  description?: boolean
   userId?: boolean
 }
 
-export type WorkspaceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "userId", ExtArgs["result"]["workspace"]>
+export type WorkspaceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "type" | "description" | "userId", ExtArgs["result"]["workspace"]>
 export type WorkspaceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   boards?: boolean | Prisma.Workspace$boardsArgs<ExtArgs>
@@ -531,7 +605,9 @@ export type $WorkspacePayload<ExtArgs extends runtime.Types.Extensions.InternalA
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    title: string
+    name: string
+    type: string
+    description: string | null
     userId: string
   }, ExtArgs["result"]["workspace"]>
   composites: {}
@@ -959,7 +1035,9 @@ export interface Prisma__WorkspaceClient<T, Null = never, ExtArgs extends runtim
  */
 export interface WorkspaceFieldRefs {
   readonly id: Prisma.FieldRef<"Workspace", 'String'>
-  readonly title: Prisma.FieldRef<"Workspace", 'String'>
+  readonly name: Prisma.FieldRef<"Workspace", 'String'>
+  readonly type: Prisma.FieldRef<"Workspace", 'String'>
+  readonly description: Prisma.FieldRef<"Workspace", 'String'>
   readonly userId: Prisma.FieldRef<"Workspace", 'String'>
 }
     

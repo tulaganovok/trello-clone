@@ -1102,7 +1102,9 @@ export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[k
 
 export const WorkspaceScalarFieldEnum = {
   id: 'id',
-  title: 'title',
+  name: 'name',
+  type: 'type',
+  description: 'description',
   userId: 'userId'
 } as const
 
@@ -1120,7 +1122,8 @@ export const BoardScalarFieldEnum = {
   imageUserName: 'imageUserName',
   imageLinkHtml: 'imageLinkHtml',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  viewedAt: 'viewedAt'
 } as const
 
 export type BoardScalarFieldEnum = (typeof BoardScalarFieldEnum)[keyof typeof BoardScalarFieldEnum]

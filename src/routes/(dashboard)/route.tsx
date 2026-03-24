@@ -3,6 +3,7 @@ import Navbar from '#/features/dashboard/components/navbar'
 import { createFileRoute } from '@tanstack/react-router'
 import { Outlet } from '@tanstack/react-router'
 import Sidebar from '#/features/dashboard/components/sidebar'
+import CreateWorkspace from '#/features/dashboard/components/create-workspace'
 
 export const Route = createFileRoute('/(dashboard)')({
   component: DashboardLayout,
@@ -23,6 +24,8 @@ function DashboardLayout() {
           <Outlet />
         </div>
       </div>
+
+      <CreateWorkspace />
     </>
   )
 }

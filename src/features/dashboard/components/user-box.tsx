@@ -13,8 +13,9 @@ import type { User } from '#/generated/prisma/client'
 import { authClient } from '#/lib/auth-client'
 import { useNavigate } from '@tanstack/react-router'
 import { ChevronRight, SquareArrowOutUpRight, Users } from 'lucide-react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { toast } from 'sonner'
+import { useCreateWorkspace } from '../hooks/use-create-workspace'
 
 interface UserBoxProps {
   user: User
@@ -22,7 +23,9 @@ interface UserBoxProps {
 
 export default function UserBox({ user }: UserBoxProps) {
   const [isSigningOut, setIsSigningOut] = useState(false)
+  const { setIsOpen } = useCreateWorkspace()
   const navigate = useNavigate()
+  const popoverTriggerRef = useRef<HTMLButtonElement | null>(null)
 
   const onSignOut = async () => {
     setIsSigningOut(true)
@@ -47,7 +50,7 @@ export default function UserBox({ user }: UserBoxProps) {
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
+      <PopoverTrigger asChild ref={popoverTriggerRef}>
         <Button size={'icon-sm'} asChild>
           <Avatar className="size-7">
             <AvatarFallback className="uppercase text-background bg-primary text-sm">
@@ -142,6 +145,10 @@ export default function UserBox({ user }: UserBoxProps) {
         <Button
           variant={'ghost'}
           className="w-full justify-start rounded-0 font-normal px-4"
+          onClick={() => {
+            popoverTriggerRef.current?.click()
+            setIsOpen(true)
+          }}
         >
           <div className="size-full flex items-center gap-x-2">
             <Users className="size-5 stroke-neutral-700" />

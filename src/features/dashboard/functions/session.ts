@@ -3,6 +3,7 @@ import { createServerFn } from '@tanstack/react-start'
 import { redirect } from '@tanstack/react-router'
 import { getRequestHeaders } from '@tanstack/react-start/server'
 
+
 export const getSessionFn = createServerFn({ method: 'GET' }).handler(
   async () => {
     const headers = getRequestHeaders()

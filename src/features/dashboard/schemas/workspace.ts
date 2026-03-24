@@ -1,8 +1,7 @@
 import { z } from 'zod'
 
 export const createWorkspaceSchema = z.object({
-  userId: z.string().min(3),
   name: z.string().min(3),
-  type:z.string().min(5),
-  description:z.string().optional()
+  type: z.string().min(5),
+  description: z.string().optional(),
 })

@@ -4,7 +4,11 @@ import { prismaAdapter } from 'better-auth/adapters/prisma'
 import { tanstackStartCookies } from 'better-auth/tanstack-start'
 
 export const auth = betterAuth({
-  emailAndPassword: { enabled: true, requireEmailVerification: false },
+  emailAndPassword: {
+    enabled: true,
+    requireEmailVerification: false,
+    autoSignIn: true,
+  },
   database: prismaAdapter(prisma, { provider: 'postgresql' }),
   plugins: [tanstackStartCookies()],
 })
