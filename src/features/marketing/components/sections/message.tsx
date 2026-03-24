@@ -8,7 +8,7 @@ export default function Message() {
 
         <p className="text-background text-center max-w-2xl mx-auto text-lg max-md:px-4 mt-3">Quickly turn communication from your favorite apps into to-dos, keeping all your discussions and tasks organized in one place.</p>
 
-        <div className="bg-background rounded-[4px] flex flex-col md:flex-row md:items-center p-6 md:p-8 mt-16 gap-y-7 gap-x-14 shadow-lg ">
+        <div className="bg-background rounded-lg flex flex-col md:flex-row md:items-center p-6 md:p-8 mt-16 gap-y-7 gap-x-14 shadow-lg ">
           <div className="w-full h-50 md:w-139 md:h-75">
 
             <img src="https://images.ctfassets.net/rz1oowkt5gyp/2QvggeQ9nzUdaDnhJCSUwA/3ef97067e1aa3d0a5e6a04b5780fd751/email-todos.png" alt="Image" className="size-full" />
@@ -27,7 +27,7 @@ export default function Message() {
 
         </div>
 
-        <div className="bg-background rounded-[4px] flex flex-col md:flex-row-reverse md:items-center p-6 md:p-8 mt-8 md:mt-16 gap-y-7 gap-x-14 shadow-xl ">
+        <div className="bg-background rounded-lg flex flex-col md:flex-row-reverse md:items-center p-6 md:p-8 mt-8 md:mt-16 gap-y-7 gap-x-14 shadow-xl ">
           <div className="w-full h-50 md:w-139 md:h-75">
             <img src="https://images.ctfassets.net/rz1oowkt5gyp/3r1BvsfEsj4THe6YwpBOVy/2b1befa1e5e3522a2b0daae0dd3f3de0/slackteams-to-inbox.png" alt="Image" className="size-full" />
           </div>

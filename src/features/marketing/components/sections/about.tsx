@@ -35,7 +35,7 @@ export default function About() {
         <div className="flex items-start flex-col-reverse md:flex-row gap-8">
           <div className="w-full md:max-w-85">
             <div className="max-md:hidden w-full space-y-4">
-              {items.map((item, idx) => <div key={idx} role="button" className={cn("rounded-[4px] p-4 cursor-pointer space-y-2", idx === index && 'border-l-8 border-cyan-500 shadow-xl')} onClick={() => setIndex(idx)}>
+              {items.map((item, idx) => <div key={idx} role="button" className={cn("rounded-lg p-4 cursor-pointer space-y-2", idx === index && 'border-l-8 border-cyan-500 shadow-xl')} onClick={() => setIndex(idx)}>
                 <h4 className="font-semibold text-lg">{item.title}</h4>
                 <p className="text-sm leading-6">{item.description}</p>
               </div>)}
@@ -60,7 +60,7 @@ export default function About() {
                 >
                   <img src={item.image} alt={item.title} className="w-full h-64 md:h-122 object-fit" />
 
-                  <div key={i} className={"rounded-[4px] flex-1 p-4 cursor-pointer space-y-2 md:hidden border-l-8 border-cyan-500 shadow-xl"} >
+                  <div key={i} className={"rounded-lg flex-1 p-4 cursor-pointer space-y-2 md:hidden border-l-8 border-cyan-500 shadow-xl"} >
                     <h4 className="font-semibold text-base">{item.title}</h4>
                     <p className="text-sm leading-6">{item.description}</p>
                   </div>

@@ -6,6 +6,8 @@ import {
 import TanStackQueryProvider from '../integrations/tanstack-query/root-provider'
 import appCss from '../styles.css?url'
 import type { QueryClient } from '@tanstack/react-query'
+import { Toaster } from 'sonner'
+import NotFound from '#/components/shared/not-found'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -22,7 +24,8 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'Capture, organize, and tackle your to-dos from anywhere. | Trello',
+        title:
+          'Capture, organize, and tackle your to-dos from anywhere. | Trello',
       },
     ],
     links: [
@@ -33,6 +36,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     ],
   }),
   shellComponent: RootDocument,
+  notFoundComponent:NotFound
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
@@ -41,8 +45,14 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
+
       <body>
-        <TanStackQueryProvider>{children}</TanStackQueryProvider>
+        <TanStackQueryProvider>
+          {children}
+
+          <Toaster />
+        </TanStackQueryProvider>
+
         <Scripts />
       </body>
     </html>

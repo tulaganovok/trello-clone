@@ -54,11 +54,13 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center h-full max-md:hidden">
-          <Button variant={'ghost'} className="h-full text-lg px-6">
-            Log in
+          <Button variant={'ghost'} className="h-full text-lg px-6" asChild>
+            <Link to="/sign-in">Log in</Link>
           </Button>
 
-          <Button className="h-full text-lg px-6">Get Trello for free</Button>
+          <Button className="h-full text-lg px-6" asChild>
+            <Link to="/sign-up">Get Trello for free</Link>
+          </Button>
         </div>
       </div>
     </header>

@@ -33,7 +33,7 @@ export default function Work() {
       </div>
 
       <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
-        {workItems.map((item, index) => <div key={index} className="bg-secondary  p-6 rounded-[4px]">
+        {workItems.map((item, index) => <div key={index} className="bg-secondary  p-6 rounded-lg">
           <div className="h-full flex flex-col justify-between gap-y-6">
             <div className="space-y-4">
 

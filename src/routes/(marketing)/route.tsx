@@ -1,3 +1,4 @@
+import Footer from '#/features/marketing/components/footer'
 import MobileNavigation from '#/features/marketing/components/mobile/mobile-navigation'
 import Navbar from '#/features/marketing/components/navbar'
 import Navigation from '#/features/marketing/components/navigation'
@@ -7,10 +8,10 @@ import { createFileRoute, Outlet } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
 export const Route = createFileRoute('/(marketing)')({
-  component: RouteComponent,
+  component: MarketingLayout,
 })
 
-function RouteComponent() {
+function MarketingLayout() {
   const { isOpen } = useNavigation()
   const { isOpenMobile } = useMobileNavigation()
 
@@ -31,6 +32,8 @@ function RouteComponent() {
       <main className={'pt-15'}>
         <Outlet />
       </main>
+
+      <Footer />
     </>
   )
 }

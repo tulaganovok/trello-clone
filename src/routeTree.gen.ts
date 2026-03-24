@@ -8,11 +8,26 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RssDotxmlRouteImport } from './routes/rss[.]xml'
 import { Route as marketingRouteRouteImport } from './routes/(marketing)/route'
+import { Route as dashboardRouteRouteImport } from './routes/(dashboard)/route'
+import { Route as authRouteRouteImport } from './routes/(auth)/route'
 import { Route as marketingIndexRouteImport } from './routes/(marketing)/index'
+import { Route as dashboardTemplatesIndexRouteImport } from './routes/(dashboard)/templates/index'
+import { Route as dashboardBoardsIndexRouteImport } from './routes/(dashboard)/boards/index'
+import { Route as authSignUpIndexRouteImport } from './routes/(auth)/sign-up/index'
+import { Route as authSignInIndexRouteImport } from './routes/(auth)/sign-in/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+
+const dashboardTemplatesLazyRouteImport = createFileRoute(
+  '/(dashboard)/templates',
+)()
+const dashboardBoardsLazyRouteImport = createFileRoute('/(dashboard)/boards')()
+const authSignUpLazyRouteImport = createFileRoute('/(auth)/sign-up')()
+const authSignInLazyRouteImport = createFileRoute('/(auth)/sign-in')()
 
 const RssDotxmlRoute = RssDotxmlRouteImport.update({
   id: '/rss.xml',
@@ -23,10 +38,68 @@ const marketingRouteRoute = marketingRouteRouteImport.update({
   id: '/(marketing)',
   getParentRoute: () => rootRouteImport,
 } as any)
+const dashboardRouteRoute = dashboardRouteRouteImport.update({
+  id: '/(dashboard)',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const authRouteRoute = authRouteRouteImport.update({
+  id: '/(auth)',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const marketingIndexRoute = marketingIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => marketingRouteRoute,
+} as any)
+const dashboardTemplatesLazyRoute = dashboardTemplatesLazyRouteImport
+  .update({
+    id: '/templates',
+    path: '/templates',
+    getParentRoute: () => dashboardRouteRoute,
+  } as any)
+  .lazy(() =>
+    import('./routes/(dashboard)/templates/lazy').then((d) => d.Route),
+  )
+const dashboardBoardsLazyRoute = dashboardBoardsLazyRouteImport
+  .update({
+    id: '/boards',
+    path: '/boards',
+    getParentRoute: () => dashboardRouteRoute,
+  } as any)
+  .lazy(() => import('./routes/(dashboard)/boards/lazy').then((d) => d.Route))
+const authSignUpLazyRoute = authSignUpLazyRouteImport
+  .update({
+    id: '/sign-up',
+    path: '/sign-up',
+    getParentRoute: () => authRouteRoute,
+  } as any)
+  .lazy(() => import('./routes/(auth)/sign-up/lazy').then((d) => d.Route))
+const authSignInLazyRoute = authSignInLazyRouteImport
+  .update({
+    id: '/sign-in',
+    path: '/sign-in',
+    getParentRoute: () => authRouteRoute,
+  } as any)
+  .lazy(() => import('./routes/(auth)/sign-in/lazy').then((d) => d.Route))
+const dashboardTemplatesIndexRoute = dashboardTemplatesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => dashboardTemplatesLazyRoute,
+} as any)
+const dashboardBoardsIndexRoute = dashboardBoardsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => dashboardBoardsLazyRoute,
+} as any)
+const authSignUpIndexRoute = authSignUpIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => authSignUpLazyRoute,
+} as any)
+const authSignInIndexRoute = authSignInIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => authSignInLazyRoute,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
@@ -36,30 +109,87 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/rss.xml': typeof RssDotxmlRoute
+  '/sign-in': typeof authSignInLazyRouteWithChildren
+  '/sign-up': typeof authSignUpLazyRouteWithChildren
+  '/boards': typeof dashboardBoardsLazyRouteWithChildren
+  '/templates': typeof dashboardTemplatesLazyRouteWithChildren
   '/': typeof marketingIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/sign-in/': typeof authSignInIndexRoute
+  '/sign-up/': typeof authSignUpIndexRoute
+  '/boards/': typeof dashboardBoardsIndexRoute
+  '/templates/': typeof dashboardTemplatesIndexRoute
 }
 export interface FileRoutesByTo {
   '/rss.xml': typeof RssDotxmlRoute
   '/': typeof marketingIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/sign-in': typeof authSignInIndexRoute
+  '/sign-up': typeof authSignUpIndexRoute
+  '/boards': typeof dashboardBoardsIndexRoute
+  '/templates': typeof dashboardTemplatesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/(auth)': typeof authRouteRouteWithChildren
+  '/(dashboard)': typeof dashboardRouteRouteWithChildren
   '/(marketing)': typeof marketingRouteRouteWithChildren
   '/rss.xml': typeof RssDotxmlRoute
+  '/(auth)/sign-in': typeof authSignInLazyRouteWithChildren
+  '/(auth)/sign-up': typeof authSignUpLazyRouteWithChildren
+  '/(dashboard)/boards': typeof dashboardBoardsLazyRouteWithChildren
+  '/(dashboard)/templates': typeof dashboardTemplatesLazyRouteWithChildren
   '/(marketing)/': typeof marketingIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/(auth)/sign-in/': typeof authSignInIndexRoute
+  '/(auth)/sign-up/': typeof authSignUpIndexRoute
+  '/(dashboard)/boards/': typeof dashboardBoardsIndexRoute
+  '/(dashboard)/templates/': typeof dashboardTemplatesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/rss.xml' | '/' | '/api/auth/$'
+  fullPaths:
+    | '/rss.xml'
+    | '/sign-in'
+    | '/sign-up'
+    | '/boards'
+    | '/templates'
+    | '/'
+    | '/api/auth/$'
+    | '/sign-in/'
+    | '/sign-up/'
+    | '/boards/'
+    | '/templates/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/rss.xml' | '/' | '/api/auth/$'
-  id: '__root__' | '/(marketing)' | '/rss.xml' | '/(marketing)/' | '/api/auth/$'
+  to:
+    | '/rss.xml'
+    | '/'
+    | '/api/auth/$'
+    | '/sign-in'
+    | '/sign-up'
+    | '/boards'
+    | '/templates'
+  id:
+    | '__root__'
+    | '/(auth)'
+    | '/(dashboard)'
+    | '/(marketing)'
+    | '/rss.xml'
+    | '/(auth)/sign-in'
+    | '/(auth)/sign-up'
+    | '/(dashboard)/boards'
+    | '/(dashboard)/templates'
+    | '/(marketing)/'
+    | '/api/auth/$'
+    | '/(auth)/sign-in/'
+    | '/(auth)/sign-up/'
+    | '/(dashboard)/boards/'
+    | '/(dashboard)/templates/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  authRouteRoute: typeof authRouteRouteWithChildren
+  dashboardRouteRoute: typeof dashboardRouteRouteWithChildren
   marketingRouteRoute: typeof marketingRouteRouteWithChildren
   RssDotxmlRoute: typeof RssDotxmlRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
@@ -81,12 +211,82 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof marketingRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(dashboard)': {
+      id: '/(dashboard)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof dashboardRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(auth)': {
+      id: '/(auth)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof authRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(marketing)/': {
       id: '/(marketing)/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof marketingIndexRouteImport
       parentRoute: typeof marketingRouteRoute
+    }
+    '/(dashboard)/templates': {
+      id: '/(dashboard)/templates'
+      path: '/templates'
+      fullPath: '/templates'
+      preLoaderRoute: typeof dashboardTemplatesLazyRouteImport
+      parentRoute: typeof dashboardRouteRoute
+    }
+    '/(dashboard)/boards': {
+      id: '/(dashboard)/boards'
+      path: '/boards'
+      fullPath: '/boards'
+      preLoaderRoute: typeof dashboardBoardsLazyRouteImport
+      parentRoute: typeof dashboardRouteRoute
+    }
+    '/(auth)/sign-up': {
+      id: '/(auth)/sign-up'
+      path: '/sign-up'
+      fullPath: '/sign-up'
+      preLoaderRoute: typeof authSignUpLazyRouteImport
+      parentRoute: typeof authRouteRoute
+    }
+    '/(auth)/sign-in': {
+      id: '/(auth)/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof authSignInLazyRouteImport
+      parentRoute: typeof authRouteRoute
+    }
+    '/(dashboard)/templates/': {
+      id: '/(dashboard)/templates/'
+      path: '/'
+      fullPath: '/templates/'
+      preLoaderRoute: typeof dashboardTemplatesIndexRouteImport
+      parentRoute: typeof dashboardTemplatesLazyRoute
+    }
+    '/(dashboard)/boards/': {
+      id: '/(dashboard)/boards/'
+      path: '/'
+      fullPath: '/boards/'
+      preLoaderRoute: typeof dashboardBoardsIndexRouteImport
+      parentRoute: typeof dashboardBoardsLazyRoute
+    }
+    '/(auth)/sign-up/': {
+      id: '/(auth)/sign-up/'
+      path: '/'
+      fullPath: '/sign-up/'
+      preLoaderRoute: typeof authSignUpIndexRouteImport
+      parentRoute: typeof authSignUpLazyRoute
+    }
+    '/(auth)/sign-in/': {
+      id: '/(auth)/sign-in/'
+      path: '/'
+      fullPath: '/sign-in/'
+      preLoaderRoute: typeof authSignInIndexRouteImport
+      parentRoute: typeof authSignInLazyRoute
     }
     '/api/auth/$': {
       id: '/api/auth/$'
@@ -97,6 +297,83 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface authSignInLazyRouteChildren {
+  authSignInIndexRoute: typeof authSignInIndexRoute
+}
+
+const authSignInLazyRouteChildren: authSignInLazyRouteChildren = {
+  authSignInIndexRoute: authSignInIndexRoute,
+}
+
+const authSignInLazyRouteWithChildren = authSignInLazyRoute._addFileChildren(
+  authSignInLazyRouteChildren,
+)
+
+interface authSignUpLazyRouteChildren {
+  authSignUpIndexRoute: typeof authSignUpIndexRoute
+}
+
+const authSignUpLazyRouteChildren: authSignUpLazyRouteChildren = {
+  authSignUpIndexRoute: authSignUpIndexRoute,
+}
+
+const authSignUpLazyRouteWithChildren = authSignUpLazyRoute._addFileChildren(
+  authSignUpLazyRouteChildren,
+)
+
+interface authRouteRouteChildren {
+  authSignInLazyRoute: typeof authSignInLazyRouteWithChildren
+  authSignUpLazyRoute: typeof authSignUpLazyRouteWithChildren
+}
+
+const authRouteRouteChildren: authRouteRouteChildren = {
+  authSignInLazyRoute: authSignInLazyRouteWithChildren,
+  authSignUpLazyRoute: authSignUpLazyRouteWithChildren,
+}
+
+const authRouteRouteWithChildren = authRouteRoute._addFileChildren(
+  authRouteRouteChildren,
+)
+
+interface dashboardBoardsLazyRouteChildren {
+  dashboardBoardsIndexRoute: typeof dashboardBoardsIndexRoute
+}
+
+const dashboardBoardsLazyRouteChildren: dashboardBoardsLazyRouteChildren = {
+  dashboardBoardsIndexRoute: dashboardBoardsIndexRoute,
+}
+
+const dashboardBoardsLazyRouteWithChildren =
+  dashboardBoardsLazyRoute._addFileChildren(dashboardBoardsLazyRouteChildren)
+
+interface dashboardTemplatesLazyRouteChildren {
+  dashboardTemplatesIndexRoute: typeof dashboardTemplatesIndexRoute
+}
+
+const dashboardTemplatesLazyRouteChildren: dashboardTemplatesLazyRouteChildren =
+  {
+    dashboardTemplatesIndexRoute: dashboardTemplatesIndexRoute,
+  }
+
+const dashboardTemplatesLazyRouteWithChildren =
+  dashboardTemplatesLazyRoute._addFileChildren(
+    dashboardTemplatesLazyRouteChildren,
+  )
+
+interface dashboardRouteRouteChildren {
+  dashboardBoardsLazyRoute: typeof dashboardBoardsLazyRouteWithChildren
+  dashboardTemplatesLazyRoute: typeof dashboardTemplatesLazyRouteWithChildren
+}
+
+const dashboardRouteRouteChildren: dashboardRouteRouteChildren = {
+  dashboardBoardsLazyRoute: dashboardBoardsLazyRouteWithChildren,
+  dashboardTemplatesLazyRoute: dashboardTemplatesLazyRouteWithChildren,
+}
+
+const dashboardRouteRouteWithChildren = dashboardRouteRoute._addFileChildren(
+  dashboardRouteRouteChildren,
+)
 
 interface marketingRouteRouteChildren {
   marketingIndexRoute: typeof marketingIndexRoute
@@ -111,6 +388,8 @@ const marketingRouteRouteWithChildren = marketingRouteRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
+  authRouteRoute: authRouteRouteWithChildren,
+  dashboardRouteRoute: dashboardRouteRouteWithChildren,
   marketingRouteRoute: marketingRouteRouteWithChildren,
   RssDotxmlRoute: RssDotxmlRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
@@ -120,10 +399,11 @@ export const routeTree = rootRouteImport
   ._addFileTypes<FileRouteTypes>()
 
 import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
+import type { startInstance } from './start.ts'
 declare module '@tanstack/react-start' {
   interface Register {
     ssr: true
     router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
   }
 }
