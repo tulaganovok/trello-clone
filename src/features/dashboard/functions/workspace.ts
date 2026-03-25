@@ -18,6 +18,10 @@ export const createWorkspaceFn = createServerFn({ method: 'POST' })
   .inputValidator(createWorkspaceSchema)
   .handler(async ({ context, data }) => {
     await prisma.workspace.create({
-      data: { ...data, userId: context.session.user.id },
+      data: {
+        ...data,
+        description: data.description || null,
+        userId: context.session.user.id,
+      },
     })
   })

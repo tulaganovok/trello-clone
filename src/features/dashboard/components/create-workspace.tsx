@@ -7,15 +7,15 @@ export default function CreateWorkspace() {
 
   return (
     <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)}>
-      <DialogContent className="md:min-w-7xl flex flex-col md:flex-row-reverse p-0">
-        <div className="flex-1 bg-primary-foreground flex items-center justify-center">
-          <img src="https://trello.com/assets/d1f066971350650d3346.svg" alt="Workspace wallpaper" className="object-center size-96 " />
+      <DialogContent className="md:min-w-300 flex flex-col md:flex-row-reverse p-0 overflow-y-auto max-h-[95vh]">
+        <div className="md:w-1/2 bg-primary-foreground flex items-center justify-center">
+          <img src="https://trello.com/assets/d1f066971350650d3346.svg" alt="Workspace wallpaper" className="object-center size-100 md:mb-20" />
         </div>
 
-        <div className="flex-1 p-4 md:px-24 md:py-16">
+        <div className="md:w-1/2 p-4 md:px-24 md:pt-14">
           <DialogTitle className="max-md:text-center text-2xl text-cyan-950">Let's build a Workspace</DialogTitle>
 
-          <DialogDescription className="text-lg leading-6 mt-3 max-md:text-center max-md:px-4 md:pr-24">Boost your productivity by making it easier for everyone to access boards in one location.</DialogDescription>
+          <DialogDescription className="text-[17px] leading-5.5 mt-3 max-md:text-center max-md:px-4">Boost your productivity by making it easier for everyone to access boards in one location.</DialogDescription>
 
           <div className="mt-6">
             <WorkspaceForm />

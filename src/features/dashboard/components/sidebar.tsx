@@ -11,6 +11,7 @@ import {
   AccordionContent,
   AccordionItem,
 } from "@/components/ui/accordion"
+import { Skeleton } from '#/components/ui/skeleton'
 
 
 const sidebarItems = linkOptions([
@@ -54,10 +55,21 @@ export default function Sidebar() {
       <div className='flex flex-col mt-6 flex-1 overflow-y-auto gap-y-2'>
         <h6 className='text-xs text-muted-foreground font-semibold px-2'>Workspaces</h6>
 
+        {!isLoading || !workspaces && <div className='flex flex-col gap-y-1'>
+          {Array.from({ length: 8 }).map((_, index) => <div key={index} className='flex items-center justify-between p-2'>
+            <div className='flex items-center gap-x-2'>
+              <Skeleton className='size-6 rounded-sm'/>
+              <Skeleton className='w-32 h-4 rounded-xs'/>
+            </div>
+
+            <Skeleton className='size-4 rounded-xs'/>
+          </div>)}
+        </div>}
+
         {!isLoading && workspaces &&
           <Accordion type="multiple">
             {workspaces.map(workspace => (
-              <AccordionItem value={workspace.id}>
+              <AccordionItem key={workspace.id} value={workspace.id}>
                 <AccordionButtonTrigger asChild>
                   <div className='size-full flex items-center gap-x-2'>
                     <div className='size-6 bg-primary rounded-sm font-semibold uppercase text-background flex items-center justify-center text-lg'>{workspace.name.at(0)}</div>
