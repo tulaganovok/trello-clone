@@ -6,11 +6,11 @@ import { Skeleton } from '#/components/ui/skeleton'
 import BoardCard from './cards/board.card'
 
 export default function RecentlyViewed() {
-  const getRecentlyViewedBoards = useServerFn(getRecentlyViewedBoardsFn)
+  // const getRecentlyViewedBoards = useServerFn(getRecentlyViewedBoardsFn)
 
   const { isLoading, data: boards } = useQuery({
     queryKey: ['recently-viewed'],
-    queryFn: getRecentlyViewedBoards,
+    queryFn: getRecentlyViewedBoardsFn,
   })
 
   return (

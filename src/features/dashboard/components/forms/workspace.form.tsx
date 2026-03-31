@@ -46,8 +46,12 @@ export default function WorkspaceForm() {
     onSubmit: async ({ value }) => {
       try {
         await createWorkspaceFn({ data: value })
+        
         await queryClient.invalidateQueries({
-          queryKey: ['workspaces', 'detailed-workspaces'],
+          queryKey: ['workspaces',],
+        })      
+        await queryClient.invalidateQueries({
+          queryKey: ['detailed-workspaces',],
         })
 
         toast.success('Workspace created successfully')

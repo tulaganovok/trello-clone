@@ -6,7 +6,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from '#/components/ui/field'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { defaultImages } from '../../constants'
 import { unsplash } from '#/lib/unsplash'
 import { Input } from '#/components/ui/input'
@@ -16,16 +16,19 @@ import { Button } from '#/components/ui/button'
 import { Skeleton } from '#/components/ui/skeleton'
 import { createBoardFn } from '../../functions/board'
 import { toast } from 'sonner'
-import { useNavigate } from '@tanstack/react-router'
+import { useLocation, useNavigate } from '@tanstack/react-router'
+import { PopoverClose } from '#/components/ui/popover'
 
 interface BoardFormProps {
   workspaceId: string
 }
 
-export default function BoardForm({ workspaceId }: BoardFormProps) {
+export default function BoardForm({ workspaceId, }: BoardFormProps) {
   const [images, setImages] = useState<Record<string, any>[]>(defaultImages)
   const [isBoardFormSubmitting, setIsBoardFormSubmitting] = useState(false)
   const [isFetchingImages, setIsFetchingImages] = useState(false)
+  const popoverCloseRef = useRef<HTMLButtonElement | null>(null)
+  const location = useLocation()
   const navigate = useNavigate()
 
   const boardForm = useForm({
@@ -56,7 +59,6 @@ export default function BoardForm({ workspaceId }: BoardFormProps) {
         })
 
         navigate({ to: '/board/$boardId', params: { boardId: newBoard.id } })
-
         boardForm.reset()
       } catch (error) {
         console.log(error)
@@ -92,6 +94,12 @@ export default function BoardForm({ workspaceId }: BoardFormProps) {
 
     fetchImages()
   }, [])
+
+  useEffect(() => {
+    if (location.pathname.startsWith('/board/')) {
+      popoverCloseRef.current?.click()
+    }
+  }, [location.pathname])
 
   return (
     <form
@@ -147,7 +155,7 @@ export default function BoardForm({ workspaceId }: BoardFormProps) {
                             className={cn(
                               'cursor-pointer relative aspect-video group hover:opacity-75 transition bg-muted h-12',
                               isBoardFormSubmitting &&
-                                'opacity-50 hover:opacity-50 cursor-auto',
+                              'opacity-50 hover:opacity-50 cursor-auto',
                             )}
                           >
                             <Input
@@ -233,7 +241,9 @@ export default function BoardForm({ workspaceId }: BoardFormProps) {
         <Button size={'sm'} className="w-full" disabled={isBoardFormSubmitting}>
           Create
         </Button>
+        <PopoverClose ref={popoverCloseRef} className='hidden' />
       </FieldGroup>
     </form>
+
   )
 }

@@ -1105,7 +1105,9 @@ export const WorkspaceScalarFieldEnum = {
   name: 'name',
   type: 'type',
   description: 'description',
-  userId: 'userId'
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type WorkspaceScalarFieldEnum = (typeof WorkspaceScalarFieldEnum)[keyof typeof WorkspaceScalarFieldEnum]

@@ -32,5 +32,6 @@ export const getUserDetailedWorkspacesFn = createServerFn({ method: 'GET' })
     return await prisma.workspace.findMany({
       where: { userId: context.session.user.id },
       include: { boards: true },
+      orderBy: { createdAt: 'desc' },
     })
   })

@@ -6,6 +6,7 @@ import {
   updateBoardTitleSchema,
 } from '../schemas/board'
 import { prisma } from '#/db'
+import { getContext } from '#/integrations/tanstack-query/root-provider'
 
 export const createBoardFn = createServerFn({ method: 'POST' })
   .middleware([authFnMiddleware])
@@ -18,11 +19,16 @@ export const getBoardByIdFn = createServerFn({ method: 'GET' })
   .middleware([authFnMiddleware])
   .inputValidator(getBoardByIdSchema)
   .handler(async ({ data }) => {
-    return await prisma.board.update({
+    const board = await prisma.board.update({
       where: { id: data.boardId },
       include: { lists: { include: { cards: true } } },
       data: { viewedAt: new Date() },
     })
+
+    const { queryClient } = getContext()
+    await queryClient.invalidateQueries({ queryKey: ['recently-viewed'] })
+
+    return board
   })
 
 export const getRecentlyViewedBoardsFn = createServerFn({ method: 'GET' })

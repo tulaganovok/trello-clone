@@ -83,7 +83,7 @@ export default function Workspaces() {
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {workspace.boards.map((board) => (
+                {workspace.boards.sort((a, b) => b.createdAt.getMilliseconds() - a.createdAt.getMilliseconds()).map((board) => (
                   <BoardCard key={board.id} board={board} />
                 ))}
 
