@@ -25,3 +25,12 @@ export const createWorkspaceFn = createServerFn({ method: 'POST' })
       },
     })
   })
+
+export const getUserDetailedWorkspacesFn = createServerFn({ method: 'GET' })
+  .middleware([authFnMiddleware])
+  .handler(async ({ context }) => {
+    return await prisma.workspace.findMany({
+      where: { userId: context.session.user.id },
+      include: { boards: true },
+    })
+  })

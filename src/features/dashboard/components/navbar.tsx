@@ -17,7 +17,7 @@ interface NavbarProps {
 
 export default function Navbar({ user }: NavbarProps) {
   return (
-    <div className="fixed bg-background h-12 border-b w-full">
+    <div className="fixed bg-background h-12 border-b w-full z-50">
       <div className="size-full flex items-center justify-between px-4">
         <div className="flex items-center">
           <Button

@@ -16,20 +16,29 @@ import { Route as marketingRouteRouteImport } from './routes/(marketing)/route'
 import { Route as dashboardRouteRouteImport } from './routes/(dashboard)/route'
 import { Route as authRouteRouteImport } from './routes/(auth)/route'
 import { Route as marketingIndexRouteImport } from './routes/(marketing)/index'
-import { Route as dashboardTemplatesIndexRouteImport } from './routes/(dashboard)/templates/index'
-import { Route as dashboardHomeIndexRouteImport } from './routes/(dashboard)/home/index'
-import { Route as dashboardBoardsIndexRouteImport } from './routes/(dashboard)/boards/index'
+import { Route as dashboardmainRouteRouteImport } from './routes/(dashboard)/(main)/route'
 import { Route as authSignUpIndexRouteImport } from './routes/(auth)/sign-up/index'
 import { Route as authSignInIndexRouteImport } from './routes/(auth)/sign-in/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as dashboardBoardBoardIdIndexRouteImport } from './routes/(dashboard)/board/$boardId/index'
+import { Route as dashboardmainTemplatesIndexRouteImport } from './routes/(dashboard)/(main)/templates/index'
+import { Route as dashboardmainHomeIndexRouteImport } from './routes/(dashboard)/(main)/home/index'
+import { Route as dashboardmainBoardsIndexRouteImport } from './routes/(dashboard)/(main)/boards/index'
 
-const dashboardTemplatesLazyRouteImport = createFileRoute(
-  '/(dashboard)/templates',
-)()
-const dashboardHomeLazyRouteImport = createFileRoute('/(dashboard)/home')()
-const dashboardBoardsLazyRouteImport = createFileRoute('/(dashboard)/boards')()
 const authSignUpLazyRouteImport = createFileRoute('/(auth)/sign-up')()
 const authSignInLazyRouteImport = createFileRoute('/(auth)/sign-in')()
+const dashboardBoardBoardIdLazyRouteImport = createFileRoute(
+  '/(dashboard)/board/$boardId',
+)()
+const dashboardmainTemplatesLazyRouteImport = createFileRoute(
+  '/(dashboard)/(main)/templates',
+)()
+const dashboardmainHomeLazyRouteImport = createFileRoute(
+  '/(dashboard)/(main)/home',
+)()
+const dashboardmainBoardsLazyRouteImport = createFileRoute(
+  '/(dashboard)/(main)/boards',
+)()
 
 const RssDotxmlRoute = RssDotxmlRouteImport.update({
   id: '/rss.xml',
@@ -53,29 +62,6 @@ const marketingIndexRoute = marketingIndexRouteImport.update({
   path: '/',
   getParentRoute: () => marketingRouteRoute,
 } as any)
-const dashboardTemplatesLazyRoute = dashboardTemplatesLazyRouteImport
-  .update({
-    id: '/templates',
-    path: '/templates',
-    getParentRoute: () => dashboardRouteRoute,
-  } as any)
-  .lazy(() =>
-    import('./routes/(dashboard)/templates/lazy').then((d) => d.Route),
-  )
-const dashboardHomeLazyRoute = dashboardHomeLazyRouteImport
-  .update({
-    id: '/home',
-    path: '/home',
-    getParentRoute: () => dashboardRouteRoute,
-  } as any)
-  .lazy(() => import('./routes/(dashboard)/home/lazy').then((d) => d.Route))
-const dashboardBoardsLazyRoute = dashboardBoardsLazyRouteImport
-  .update({
-    id: '/boards',
-    path: '/boards',
-    getParentRoute: () => dashboardRouteRoute,
-  } as any)
-  .lazy(() => import('./routes/(dashboard)/boards/lazy').then((d) => d.Route))
 const authSignUpLazyRoute = authSignUpLazyRouteImport
   .update({
     id: '/sign-up',
@@ -90,20 +76,9 @@ const authSignInLazyRoute = authSignInLazyRouteImport
     getParentRoute: () => authRouteRoute,
   } as any)
   .lazy(() => import('./routes/(auth)/sign-in/lazy').then((d) => d.Route))
-const dashboardTemplatesIndexRoute = dashboardTemplatesIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => dashboardTemplatesLazyRoute,
-} as any)
-const dashboardHomeIndexRoute = dashboardHomeIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => dashboardHomeLazyRoute,
-} as any)
-const dashboardBoardsIndexRoute = dashboardBoardsIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => dashboardBoardsLazyRoute,
+const dashboardmainRouteRoute = dashboardmainRouteRouteImport.update({
+  id: '/(main)',
+  getParentRoute: () => dashboardRouteRoute,
 } as any)
 const authSignUpIndexRoute = authSignUpIndexRouteImport.update({
   id: '/',
@@ -115,26 +90,87 @@ const authSignInIndexRoute = authSignInIndexRouteImport.update({
   path: '/',
   getParentRoute: () => authSignInLazyRoute,
 } as any)
+const dashboardBoardBoardIdLazyRoute = dashboardBoardBoardIdLazyRouteImport
+  .update({
+    id: '/board/$boardId',
+    path: '/board/$boardId',
+    getParentRoute: () => dashboardRouteRoute,
+  } as any)
+  .lazy(() =>
+    import('./routes/(dashboard)/board/$boardId/lazy').then((d) => d.Route),
+  )
+const dashboardmainTemplatesLazyRoute = dashboardmainTemplatesLazyRouteImport
+  .update({
+    id: '/templates',
+    path: '/templates',
+    getParentRoute: () => dashboardmainRouteRoute,
+  } as any)
+  .lazy(() =>
+    import('./routes/(dashboard)/(main)/templates/lazy').then((d) => d.Route),
+  )
+const dashboardmainHomeLazyRoute = dashboardmainHomeLazyRouteImport
+  .update({
+    id: '/home',
+    path: '/home',
+    getParentRoute: () => dashboardmainRouteRoute,
+  } as any)
+  .lazy(() =>
+    import('./routes/(dashboard)/(main)/home/lazy').then((d) => d.Route),
+  )
+const dashboardmainBoardsLazyRoute = dashboardmainBoardsLazyRouteImport
+  .update({
+    id: '/boards',
+    path: '/boards',
+    getParentRoute: () => dashboardmainRouteRoute,
+  } as any)
+  .lazy(() =>
+    import('./routes/(dashboard)/(main)/boards/lazy').then((d) => d.Route),
+  )
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const dashboardBoardBoardIdIndexRoute =
+  dashboardBoardBoardIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => dashboardBoardBoardIdLazyRoute,
+  } as any)
+const dashboardmainTemplatesIndexRoute =
+  dashboardmainTemplatesIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => dashboardmainTemplatesLazyRoute,
+  } as any)
+const dashboardmainHomeIndexRoute = dashboardmainHomeIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => dashboardmainHomeLazyRoute,
+} as any)
+const dashboardmainBoardsIndexRoute =
+  dashboardmainBoardsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => dashboardmainBoardsLazyRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/rss.xml': typeof RssDotxmlRoute
   '/sign-in': typeof authSignInLazyRouteWithChildren
   '/sign-up': typeof authSignUpLazyRouteWithChildren
-  '/boards': typeof dashboardBoardsLazyRouteWithChildren
-  '/home': typeof dashboardHomeLazyRouteWithChildren
-  '/templates': typeof dashboardTemplatesLazyRouteWithChildren
   '/': typeof marketingIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/boards': typeof dashboardmainBoardsLazyRouteWithChildren
+  '/home': typeof dashboardmainHomeLazyRouteWithChildren
+  '/templates': typeof dashboardmainTemplatesLazyRouteWithChildren
+  '/board/$boardId': typeof dashboardBoardBoardIdLazyRouteWithChildren
   '/sign-in/': typeof authSignInIndexRoute
   '/sign-up/': typeof authSignUpIndexRoute
-  '/boards/': typeof dashboardBoardsIndexRoute
-  '/home/': typeof dashboardHomeIndexRoute
-  '/templates/': typeof dashboardTemplatesIndexRoute
+  '/boards/': typeof dashboardmainBoardsIndexRoute
+  '/home/': typeof dashboardmainHomeIndexRoute
+  '/templates/': typeof dashboardmainTemplatesIndexRoute
+  '/board/$boardId/': typeof dashboardBoardBoardIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/rss.xml': typeof RssDotxmlRoute
@@ -142,9 +178,10 @@ export interface FileRoutesByTo {
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/sign-in': typeof authSignInIndexRoute
   '/sign-up': typeof authSignUpIndexRoute
-  '/boards': typeof dashboardBoardsIndexRoute
-  '/home': typeof dashboardHomeIndexRoute
-  '/templates': typeof dashboardTemplatesIndexRoute
+  '/boards': typeof dashboardmainBoardsIndexRoute
+  '/home': typeof dashboardmainHomeIndexRoute
+  '/templates': typeof dashboardmainTemplatesIndexRoute
+  '/board/$boardId': typeof dashboardBoardBoardIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -152,18 +189,21 @@ export interface FileRoutesById {
   '/(dashboard)': typeof dashboardRouteRouteWithChildren
   '/(marketing)': typeof marketingRouteRouteWithChildren
   '/rss.xml': typeof RssDotxmlRoute
+  '/(dashboard)/(main)': typeof dashboardmainRouteRouteWithChildren
   '/(auth)/sign-in': typeof authSignInLazyRouteWithChildren
   '/(auth)/sign-up': typeof authSignUpLazyRouteWithChildren
-  '/(dashboard)/boards': typeof dashboardBoardsLazyRouteWithChildren
-  '/(dashboard)/home': typeof dashboardHomeLazyRouteWithChildren
-  '/(dashboard)/templates': typeof dashboardTemplatesLazyRouteWithChildren
   '/(marketing)/': typeof marketingIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/(dashboard)/(main)/boards': typeof dashboardmainBoardsLazyRouteWithChildren
+  '/(dashboard)/(main)/home': typeof dashboardmainHomeLazyRouteWithChildren
+  '/(dashboard)/(main)/templates': typeof dashboardmainTemplatesLazyRouteWithChildren
+  '/(dashboard)/board/$boardId': typeof dashboardBoardBoardIdLazyRouteWithChildren
   '/(auth)/sign-in/': typeof authSignInIndexRoute
   '/(auth)/sign-up/': typeof authSignUpIndexRoute
-  '/(dashboard)/boards/': typeof dashboardBoardsIndexRoute
-  '/(dashboard)/home/': typeof dashboardHomeIndexRoute
-  '/(dashboard)/templates/': typeof dashboardTemplatesIndexRoute
+  '/(dashboard)/(main)/boards/': typeof dashboardmainBoardsIndexRoute
+  '/(dashboard)/(main)/home/': typeof dashboardmainHomeIndexRoute
+  '/(dashboard)/(main)/templates/': typeof dashboardmainTemplatesIndexRoute
+  '/(dashboard)/board/$boardId/': typeof dashboardBoardBoardIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -171,16 +211,18 @@ export interface FileRouteTypes {
     | '/rss.xml'
     | '/sign-in'
     | '/sign-up'
+    | '/'
+    | '/api/auth/$'
     | '/boards'
     | '/home'
     | '/templates'
-    | '/'
-    | '/api/auth/$'
+    | '/board/$boardId'
     | '/sign-in/'
     | '/sign-up/'
     | '/boards/'
     | '/home/'
     | '/templates/'
+    | '/board/$boardId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/rss.xml'
@@ -191,24 +233,28 @@ export interface FileRouteTypes {
     | '/boards'
     | '/home'
     | '/templates'
+    | '/board/$boardId'
   id:
     | '__root__'
     | '/(auth)'
     | '/(dashboard)'
     | '/(marketing)'
     | '/rss.xml'
+    | '/(dashboard)/(main)'
     | '/(auth)/sign-in'
     | '/(auth)/sign-up'
-    | '/(dashboard)/boards'
-    | '/(dashboard)/home'
-    | '/(dashboard)/templates'
     | '/(marketing)/'
     | '/api/auth/$'
+    | '/(dashboard)/(main)/boards'
+    | '/(dashboard)/(main)/home'
+    | '/(dashboard)/(main)/templates'
+    | '/(dashboard)/board/$boardId'
     | '/(auth)/sign-in/'
     | '/(auth)/sign-up/'
-    | '/(dashboard)/boards/'
-    | '/(dashboard)/home/'
-    | '/(dashboard)/templates/'
+    | '/(dashboard)/(main)/boards/'
+    | '/(dashboard)/(main)/home/'
+    | '/(dashboard)/(main)/templates/'
+    | '/(dashboard)/board/$boardId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -256,27 +302,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof marketingIndexRouteImport
       parentRoute: typeof marketingRouteRoute
     }
-    '/(dashboard)/templates': {
-      id: '/(dashboard)/templates'
-      path: '/templates'
-      fullPath: '/templates'
-      preLoaderRoute: typeof dashboardTemplatesLazyRouteImport
-      parentRoute: typeof dashboardRouteRoute
-    }
-    '/(dashboard)/home': {
-      id: '/(dashboard)/home'
-      path: '/home'
-      fullPath: '/home'
-      preLoaderRoute: typeof dashboardHomeLazyRouteImport
-      parentRoute: typeof dashboardRouteRoute
-    }
-    '/(dashboard)/boards': {
-      id: '/(dashboard)/boards'
-      path: '/boards'
-      fullPath: '/boards'
-      preLoaderRoute: typeof dashboardBoardsLazyRouteImport
-      parentRoute: typeof dashboardRouteRoute
-    }
     '/(auth)/sign-up': {
       id: '/(auth)/sign-up'
       path: '/sign-up'
@@ -291,26 +316,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authSignInLazyRouteImport
       parentRoute: typeof authRouteRoute
     }
-    '/(dashboard)/templates/': {
-      id: '/(dashboard)/templates/'
-      path: '/'
-      fullPath: '/templates/'
-      preLoaderRoute: typeof dashboardTemplatesIndexRouteImport
-      parentRoute: typeof dashboardTemplatesLazyRoute
-    }
-    '/(dashboard)/home/': {
-      id: '/(dashboard)/home/'
-      path: '/'
-      fullPath: '/home/'
-      preLoaderRoute: typeof dashboardHomeIndexRouteImport
-      parentRoute: typeof dashboardHomeLazyRoute
-    }
-    '/(dashboard)/boards/': {
-      id: '/(dashboard)/boards/'
-      path: '/'
-      fullPath: '/boards/'
-      preLoaderRoute: typeof dashboardBoardsIndexRouteImport
-      parentRoute: typeof dashboardBoardsLazyRoute
+    '/(dashboard)/(main)': {
+      id: '/(dashboard)/(main)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof dashboardmainRouteRouteImport
+      parentRoute: typeof dashboardRouteRoute
     }
     '/(auth)/sign-up/': {
       id: '/(auth)/sign-up/'
@@ -326,12 +337,68 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authSignInIndexRouteImport
       parentRoute: typeof authSignInLazyRoute
     }
+    '/(dashboard)/board/$boardId': {
+      id: '/(dashboard)/board/$boardId'
+      path: '/board/$boardId'
+      fullPath: '/board/$boardId'
+      preLoaderRoute: typeof dashboardBoardBoardIdLazyRouteImport
+      parentRoute: typeof dashboardRouteRoute
+    }
+    '/(dashboard)/(main)/templates': {
+      id: '/(dashboard)/(main)/templates'
+      path: '/templates'
+      fullPath: '/templates'
+      preLoaderRoute: typeof dashboardmainTemplatesLazyRouteImport
+      parentRoute: typeof dashboardmainRouteRoute
+    }
+    '/(dashboard)/(main)/home': {
+      id: '/(dashboard)/(main)/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof dashboardmainHomeLazyRouteImport
+      parentRoute: typeof dashboardmainRouteRoute
+    }
+    '/(dashboard)/(main)/boards': {
+      id: '/(dashboard)/(main)/boards'
+      path: '/boards'
+      fullPath: '/boards'
+      preLoaderRoute: typeof dashboardmainBoardsLazyRouteImport
+      parentRoute: typeof dashboardmainRouteRoute
+    }
     '/api/auth/$': {
       id: '/api/auth/$'
       path: '/api/auth/$'
       fullPath: '/api/auth/$'
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/(dashboard)/board/$boardId/': {
+      id: '/(dashboard)/board/$boardId/'
+      path: '/'
+      fullPath: '/board/$boardId/'
+      preLoaderRoute: typeof dashboardBoardBoardIdIndexRouteImport
+      parentRoute: typeof dashboardBoardBoardIdLazyRoute
+    }
+    '/(dashboard)/(main)/templates/': {
+      id: '/(dashboard)/(main)/templates/'
+      path: '/'
+      fullPath: '/templates/'
+      preLoaderRoute: typeof dashboardmainTemplatesIndexRouteImport
+      parentRoute: typeof dashboardmainTemplatesLazyRoute
+    }
+    '/(dashboard)/(main)/home/': {
+      id: '/(dashboard)/(main)/home/'
+      path: '/'
+      fullPath: '/home/'
+      preLoaderRoute: typeof dashboardmainHomeIndexRouteImport
+      parentRoute: typeof dashboardmainHomeLazyRoute
+    }
+    '/(dashboard)/(main)/boards/': {
+      id: '/(dashboard)/(main)/boards/'
+      path: '/'
+      fullPath: '/boards/'
+      preLoaderRoute: typeof dashboardmainBoardsIndexRouteImport
+      parentRoute: typeof dashboardmainBoardsLazyRoute
     }
   }
 }
@@ -374,52 +441,84 @@ const authRouteRouteWithChildren = authRouteRoute._addFileChildren(
   authRouteRouteChildren,
 )
 
-interface dashboardBoardsLazyRouteChildren {
-  dashboardBoardsIndexRoute: typeof dashboardBoardsIndexRoute
+interface dashboardmainBoardsLazyRouteChildren {
+  dashboardmainBoardsIndexRoute: typeof dashboardmainBoardsIndexRoute
 }
 
-const dashboardBoardsLazyRouteChildren: dashboardBoardsLazyRouteChildren = {
-  dashboardBoardsIndexRoute: dashboardBoardsIndexRoute,
-}
-
-const dashboardBoardsLazyRouteWithChildren =
-  dashboardBoardsLazyRoute._addFileChildren(dashboardBoardsLazyRouteChildren)
-
-interface dashboardHomeLazyRouteChildren {
-  dashboardHomeIndexRoute: typeof dashboardHomeIndexRoute
-}
-
-const dashboardHomeLazyRouteChildren: dashboardHomeLazyRouteChildren = {
-  dashboardHomeIndexRoute: dashboardHomeIndexRoute,
-}
-
-const dashboardHomeLazyRouteWithChildren =
-  dashboardHomeLazyRoute._addFileChildren(dashboardHomeLazyRouteChildren)
-
-interface dashboardTemplatesLazyRouteChildren {
-  dashboardTemplatesIndexRoute: typeof dashboardTemplatesIndexRoute
-}
-
-const dashboardTemplatesLazyRouteChildren: dashboardTemplatesLazyRouteChildren =
+const dashboardmainBoardsLazyRouteChildren: dashboardmainBoardsLazyRouteChildren =
   {
-    dashboardTemplatesIndexRoute: dashboardTemplatesIndexRoute,
+    dashboardmainBoardsIndexRoute: dashboardmainBoardsIndexRoute,
   }
 
-const dashboardTemplatesLazyRouteWithChildren =
-  dashboardTemplatesLazyRoute._addFileChildren(
-    dashboardTemplatesLazyRouteChildren,
+const dashboardmainBoardsLazyRouteWithChildren =
+  dashboardmainBoardsLazyRoute._addFileChildren(
+    dashboardmainBoardsLazyRouteChildren,
+  )
+
+interface dashboardmainHomeLazyRouteChildren {
+  dashboardmainHomeIndexRoute: typeof dashboardmainHomeIndexRoute
+}
+
+const dashboardmainHomeLazyRouteChildren: dashboardmainHomeLazyRouteChildren = {
+  dashboardmainHomeIndexRoute: dashboardmainHomeIndexRoute,
+}
+
+const dashboardmainHomeLazyRouteWithChildren =
+  dashboardmainHomeLazyRoute._addFileChildren(
+    dashboardmainHomeLazyRouteChildren,
+  )
+
+interface dashboardmainTemplatesLazyRouteChildren {
+  dashboardmainTemplatesIndexRoute: typeof dashboardmainTemplatesIndexRoute
+}
+
+const dashboardmainTemplatesLazyRouteChildren: dashboardmainTemplatesLazyRouteChildren =
+  {
+    dashboardmainTemplatesIndexRoute: dashboardmainTemplatesIndexRoute,
+  }
+
+const dashboardmainTemplatesLazyRouteWithChildren =
+  dashboardmainTemplatesLazyRoute._addFileChildren(
+    dashboardmainTemplatesLazyRouteChildren,
+  )
+
+interface dashboardmainRouteRouteChildren {
+  dashboardmainBoardsLazyRoute: typeof dashboardmainBoardsLazyRouteWithChildren
+  dashboardmainHomeLazyRoute: typeof dashboardmainHomeLazyRouteWithChildren
+  dashboardmainTemplatesLazyRoute: typeof dashboardmainTemplatesLazyRouteWithChildren
+}
+
+const dashboardmainRouteRouteChildren: dashboardmainRouteRouteChildren = {
+  dashboardmainBoardsLazyRoute: dashboardmainBoardsLazyRouteWithChildren,
+  dashboardmainHomeLazyRoute: dashboardmainHomeLazyRouteWithChildren,
+  dashboardmainTemplatesLazyRoute: dashboardmainTemplatesLazyRouteWithChildren,
+}
+
+const dashboardmainRouteRouteWithChildren =
+  dashboardmainRouteRoute._addFileChildren(dashboardmainRouteRouteChildren)
+
+interface dashboardBoardBoardIdLazyRouteChildren {
+  dashboardBoardBoardIdIndexRoute: typeof dashboardBoardBoardIdIndexRoute
+}
+
+const dashboardBoardBoardIdLazyRouteChildren: dashboardBoardBoardIdLazyRouteChildren =
+  {
+    dashboardBoardBoardIdIndexRoute: dashboardBoardBoardIdIndexRoute,
+  }
+
+const dashboardBoardBoardIdLazyRouteWithChildren =
+  dashboardBoardBoardIdLazyRoute._addFileChildren(
+    dashboardBoardBoardIdLazyRouteChildren,
   )
 
 interface dashboardRouteRouteChildren {
-  dashboardBoardsLazyRoute: typeof dashboardBoardsLazyRouteWithChildren
-  dashboardHomeLazyRoute: typeof dashboardHomeLazyRouteWithChildren
-  dashboardTemplatesLazyRoute: typeof dashboardTemplatesLazyRouteWithChildren
+  dashboardmainRouteRoute: typeof dashboardmainRouteRouteWithChildren
+  dashboardBoardBoardIdLazyRoute: typeof dashboardBoardBoardIdLazyRouteWithChildren
 }
 
 const dashboardRouteRouteChildren: dashboardRouteRouteChildren = {
-  dashboardBoardsLazyRoute: dashboardBoardsLazyRouteWithChildren,
-  dashboardHomeLazyRoute: dashboardHomeLazyRouteWithChildren,
-  dashboardTemplatesLazyRoute: dashboardTemplatesLazyRouteWithChildren,
+  dashboardmainRouteRoute: dashboardmainRouteRouteWithChildren,
+  dashboardBoardBoardIdLazyRoute: dashboardBoardBoardIdLazyRouteWithChildren,
 }
 
 const dashboardRouteRouteWithChildren = dashboardRouteRoute._addFileChildren(
