@@ -22,3 +22,22 @@ export const updateCardOrderSchema = z.object({
     }),
   ),
 })
+
+export const updateCardByIdSchema = z.object({
+  id: z.string(),
+  order: z.number().optional(),
+  listId: z.string().optional(),
+  title: z.string().optional(),
+  description: z.string().nullable().optional(),
+  createdAt: z.date().optional(),
+  updatedAt: z.date().optional(),
+  checked: z.boolean().optional(),
+})
+
+export const cardDescriptionSchema = z.object({
+  description: z.string().nullable(),
+})
+
+export const cardIdSchema = z.object({
+  cardId: z.string(),
+})

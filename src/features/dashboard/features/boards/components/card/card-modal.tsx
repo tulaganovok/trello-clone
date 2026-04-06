@@ -9,22 +9,30 @@ import {
   DialogTitle,
 } from '#/components/ui/dialog'
 import { Button } from '#/components/ui/button'
+import CardTitleForm from '../forms/card-title.form'
+import CardDescriptionForm from '../forms/card-description.form'
+import { Route } from '#/routes/(dashboard)/board/$boardId'
+import { useQueryClient } from '@tanstack/react-query'
+import { copyCardByIdFn, deleteCardByIdFn } from '../../functions/card'
 
 export default function CardModal() {
-  const { card, isOpen, onClose } = useCardModal()
+  const { card, onClose } = useCardModal()
   const [isPending, setIsPending] = useState(false)
+  const { boardId } = Route.useParams()
+  const queryClient = useQueryClient()
 
   const onCopyCard = async () => {
     setIsPending(true)
 
     try {
-      //   await copyCardById(card?.id as string, params.boardId as string)
-      toast.success('Card copied successfully')
+      await copyCardByIdFn({ data: { cardId: card?.id! } })
+      await queryClient.invalidateQueries({ queryKey: ['board', boardId] })
+
       onClose()
     } catch {
       toast.error('Failed to copy card')
     } finally {
-      setIsPending(true)
+      setIsPending(false)
     }
   }
 
@@ -32,8 +40,9 @@ export default function CardModal() {
     setIsPending(true)
 
     try {
-      //   await deleteCardById(card?.id as string, params.boardId as string)
-      toast.success('Card deleted successfully')
+      await deleteCardByIdFn({ data: { cardId: card?.id! } })
+      await queryClient.invalidateQueries({ queryKey: ['board', boardId] })
+
       onClose()
     } catch {
       toast.error('Failed to delete card')
@@ -43,7 +52,7 @@ export default function CardModal() {
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={!!card} onOpenChange={onClose}>
       <DialogContent
         className="md:min-w-3xl top-[40%]"
         onOpenAutoFocus={(e) => e.preventDefault()}
@@ -51,14 +60,16 @@ export default function CardModal() {
         <DialogTitle className="hidden" />
         <DialogDescription className="hidden" />
 
-        {/* <CardTitleForm card={card} /> */}
-
-        {card?.title}
+        {card && (
+          <CardTitleForm card={card} />
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-4 md:gap-4">
           <div className="col-span-3">
             <div className="w-full">
-              {/* <CardDescriptionForm card={card} /> */}
+              {card && (
+                <CardDescriptionForm card={card} />
+              )}
             </div>
           </div>
 
@@ -86,7 +97,7 @@ export default function CardModal() {
                 onClick={onDeleteCard}
                 className="border-destructive hover:border-destructive text-destructive hover:text-destructive justify-start"
               >
-                <Trash />
+                <Trash className='stroke-destructive' />
                 Delete
               </Button>
             </div>
