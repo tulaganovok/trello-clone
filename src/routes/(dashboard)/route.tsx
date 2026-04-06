@@ -15,7 +15,7 @@ function DashboardLayout() {
   return (
     <>
       <Navbar user={{ ...data.user, image: data.user.image! }} />
-      
+
       <Suspense fallback={<div className="h-screen w-screen bg-accent" />}>
         <Outlet />
       </Suspense>

@@ -25,7 +25,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       },
       {
         title:
-          'Capture, organize, and tackle your to-dos from anywhere. | Trello',
+          'Trello',
       },
     ],
     links: [

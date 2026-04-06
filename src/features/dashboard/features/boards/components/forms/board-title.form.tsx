@@ -35,11 +35,9 @@ export default function BoardTitleForm({ board }: BoardTitleFormProps) {
       setIsBoardTitleFormSubmitting(true)
 
       try {
-        const updatedBoard = await updateBoardTitleFn({
+        await updateBoardTitleFn({
           data: { boardId: board.id, title: titleValue },
         })
-
-        document.title = updatedBoard.title
 
         await queryClient.invalidateQueries({ queryKey: ['board', board.id] })
         setIsEditing(false)

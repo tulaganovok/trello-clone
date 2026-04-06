@@ -4,34 +4,49 @@ import BoardNavbar from '#/features/dashboard/features/boards/components/board-n
 import ListContainer from '#/features/dashboard/features/boards/components/list/list-container'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { useServerFn } from '@tanstack/react-start'
+import { useEffect } from 'react'
+import { getSessionFn } from '#/features/dashboard/functions/session'
 
 export const Route = createFileRoute('/(dashboard)/board/$boardId/')({
-  component: BoardIdPage
+  component: BoardIdPage,
 })
 
 function BoardIdPage() {
   const { boardId } = Route.useParams()
   const getBoardById = useServerFn(() => getBoardByIdFn({ data: { boardId } }))
+  const getSession = useServerFn(() => getSessionFn())
 
   const { data: board } = useSuspenseQuery({
     queryKey: ['board', boardId],
     queryFn: getBoardById,
   })
 
+  const { data: session } = useSuspenseQuery({
+    queryKey: ['session'],
+    queryFn: getSession,
+  })
+
+  useEffect(() => {
+    document.title = board.title
+  }, [board.title])
 
   return (
     <div
       className="relative h-screen bg-no-repeat bg-cover bg-center bg-accent"
       style={{ backgroundImage: `url(${board.imageFullUrl})` }}
     >
-      <BoardNavbar board={board} />
+      <BoardNavbar
+        board={board}
+        user={{ ...session.user, image: session.user.image! }}
+      />
 
-      <main className="h-full relative pt-28">
+      <main className="h-full relative pt-26">
         <div className="p-4 h-full overflow-x-auto">
-          <ListContainer boardId={boardId} lists={board.lists} />
+          <ListContainer
+            lists={board.lists.sort((a, b) => a.order - b.order)}
+          />
         </div>
       </main>
     </div>
-
   )
 }
