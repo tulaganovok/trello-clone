@@ -1,10 +1,14 @@
-import { cn, reorder } from '#/lib/utils'
+import { cn, debounce, reorder, sortLists } from '#/lib/utils'
 import type { ListWithCards } from '#/types/list'
-import { DragDropContext, Droppable, type DropResult } from '@hello-pangea/dnd'
-import { useEffect, useState } from 'react'
+import {
+  DragDropContext,
+  Droppable,
+  type DropResult,
+} from '@hello-pangea/dnd'
+import { useEffect, useRef, useState } from 'react'
 import { updateListOrderFn } from '../../functions/list'
-import { useQueryClient } from '@tanstack/react-query'
 import { updateCardOrderFn } from '../../functions/card'
+import { useQueryClient } from '@tanstack/react-query'
 import ListForm from '../forms/list.form'
 import ListItem from './list-item'
 import { Route } from '#/routes/(dashboard)/board/$boardId'
@@ -15,105 +19,139 @@ interface ListContainerProps {
 }
 
 export default function ListContainer({ lists }: ListContainerProps) {
-  const [orderedLists, setOrderedLists] = useState(lists)
-
-  const [isDragging, setIsDragging] = useState(false)
+  const [orderedLists, setOrderedLists] = useState<ListWithCards[]>([])
   const queryClient = useQueryClient()
   const { boardId } = Route.useParams()
 
-  const onDragEnd = async (result: DropResult) => {
+  const prevStateRef = useRef<ListWithCards[]>([])
+
+  const rollback = () => {
+    setOrderedLists(prevStateRef.current)
+    queryClient.setQueryData(['board', boardId], (old: any) => ({
+      ...old,
+      lists: prevStateRef.current,
+    }))
+  }
+
+  const syncCache = (lists: ListWithCards[]) => {
+    queryClient.setQueryData(['board', boardId], (old: any) => ({
+      ...old,
+      lists,
+    }))
+  }
+
+  const debouncedUpdateLists = useRef(
+    debounce((lists: ListWithCards[]) => {
+      updateListOrderFn({ data: { lists } }).catch(rollback)
+    }, 400),
+  ).current
+
+  const debouncedUpdateCards = useRef(
+    debounce((cards: any[]) => {
+      updateCardOrderFn({ data: { cards } }).catch(rollback)
+    }, 400),
+  ).current
+
+  const onDragEnd = (result: DropResult) => {
     const { source, destination, type } = result
 
-    if (isDragging) return
     if (!destination) return
     if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
     )
       return
 
+    prevStateRef.current = orderedLists
+
     if (type === 'list') {
-      const newOrderedLists = reorder(
+      const newLists = reorder(
         orderedLists,
         source.index,
         destination.index,
-      ).map((list, index) => ({ ...list, order: index }))
+      ).map((l, i) => ({
+        ...l,
+        order: i,
+      }))
 
-      setOrderedLists(newOrderedLists)
-      setIsDragging(true)
+      setOrderedLists(newLists)
+      syncCache(newLists)
+      debouncedUpdateLists(newLists)
 
-      await updateListOrderFn({ data: { lists: newOrderedLists } })
-      await queryClient.invalidateQueries({ queryKey: ['board', boardId] })
-
-      setIsDragging(false)
+      return
     }
 
-    const newOrderedLists = [...orderedLists]
+    const newLists = structuredClone(orderedLists)
 
-    const sourceList = newOrderedLists.find(
-      (list) => list.id === source.droppableId,
+    const sourceList = newLists.find(
+      (l) => l.id === source.droppableId,
     )
-    const destinationList = newOrderedLists.find(
-      (list) => list.id === destination.droppableId,
+    const destList = newLists.find(
+      (l) => l.id === destination.droppableId,
     )
 
-    if (!sourceList || !destinationList) return
+    if (!sourceList || !destList) return
 
-    if (source.droppableId === destination.droppableId) {
-      const reorderedCards = reorder(
+    if (sourceList.id === destList.id) {
+      const reordered = reorder(
         sourceList.cards,
         source.index,
         destination.index,
       )
 
-      reorderedCards.forEach((card, index) => {
-        card.order = index
-      })
+      reordered.forEach((c, i) => (c.order = i))
+      sourceList.cards = reordered
 
-      sourceList.cards = reorderedCards
+      setOrderedLists(newLists)
+      syncCache(newLists)
 
-      setOrderedLists(newOrderedLists)
-      setIsDragging(true)
-
-      await updateCardOrderFn({ data: { cards: reorderedCards } })
-      await queryClient.invalidateQueries({ queryKey: ['board', boardId] })
-
-      setIsDragging(false)
-    } else {
-      const [movedCard] = sourceList.cards.splice(source.index, 1)
-      movedCard.listId = destination.droppableId
-      destinationList.cards.splice(destination.index, 0, movedCard)
-
-      sourceList.cards.forEach((card, index) => {
-        card.order = index
-      })
-
-      destinationList.cards.forEach((card, index) => {
-        card.order = index
-      })
-
-      setOrderedLists(newOrderedLists)
-      setIsDragging(true)
-
-      await updateCardOrderFn({ data: { cards: destinationList.cards } })
-      await queryClient.invalidateQueries({ queryKey: ['board', boardId] })
-
-      setIsDragging(false)
+      debouncedUpdateCards(reordered)
+      return
     }
+
+    const [moved] = sourceList.cards.splice(source.index, 1)
+
+    moved.listId = destList.id
+    destList.cards.splice(destination.index, 0, moved)
+
+    sourceList.cards.forEach((c, i) => (c.order = i))
+    destList.cards.forEach((c, i) => (c.order = i))
+
+    setOrderedLists(newLists)
+    syncCache(newLists)
+
+    debouncedUpdateCards([
+      ...sourceList.cards,
+      ...destList.cards,
+    ])
   }
 
-  useEffect(() => setOrderedLists(lists), [lists])
+  useEffect(() => {
+    const sorted = sortLists(lists)
+    setOrderedLists(sorted)
+  }, [lists])
+
+  useEffect(() => {
+    return () => {
+      debouncedUpdateCards.flush?.()
+      debouncedUpdateLists.flush?.()
+    }
+  }, [])
 
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className={cn(isDragging && 'pointer-events-none opacity-80')}>
-          <Droppable droppableId="lists" type="list" direction="horizontal">
+        <div className={cn('transition-opacity')}>
+          <Droppable
+            droppableId="lists"
+            type="list"
+            direction="horizontal"
+          >
             {(provided) => (
               <ol
                 {...provided.droppableProps}
                 ref={provided.innerRef}
-                className="flex gap-x-3 h-full relative"
+                className="flex gap-x-3 h-full"
               >
                 {orderedLists.map((list, index) => (
                   <ListItem key={list.id} list={list} index={index} />

@@ -18,6 +18,7 @@ export default function ListForm() {
   const formRef = useRef<HTMLFormElement | null>(null)
   const { boardId } = Route.useParams()
   const queryClient = useQueryClient()
+  const [step, setStep] = useState(1)
 
   const listForm = useForm({
     defaultValues: { title: '' },
@@ -29,6 +30,7 @@ export default function ListForm() {
         await createListFn({ data: { title: value.title, boardId } })
         await queryClient.invalidateQueries({ queryKey: ['board', boardId] })
         listForm.reset()
+        setStep(prev => prev + 1)
       } catch {
         toast.error('Failed to create list')
       } finally {
@@ -53,10 +55,10 @@ export default function ListForm() {
   }
 
   useEffect(() => {
-    if (isAdding || !inputRef.current) {
+    if (isAdding) {
       inputRef.current?.focus()
     }
-  }, [isAdding])
+  }, [isAdding, step])
 
   useEventListener('keydown', onKeyDown)
   useOnClickOutside(formRef as RefObject<HTMLElement>, onCloseListForm)

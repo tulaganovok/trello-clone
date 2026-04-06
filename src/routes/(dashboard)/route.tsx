@@ -3,6 +3,7 @@ import Navbar from '#/features/dashboard/components/navbar'
 import { createFileRoute } from '@tanstack/react-router'
 import { Outlet } from '@tanstack/react-router'
 import { Suspense } from 'react'
+import { Loader2 } from 'lucide-react'
 
 export const Route = createFileRoute('/(dashboard)')({
   component: DashboardLayout,
@@ -16,7 +17,9 @@ function DashboardLayout() {
     <>
       <Navbar user={{ ...data.user, image: data.user.image! }} />
 
-      <Suspense fallback={<div className="h-screen w-screen bg-accent" />}>
+      <Suspense fallback={<div className="h-screen w-screen bg-accent flex items-center justify-center">
+        <Loader2 className='animate-spin size-8 stroke-muted-foreground' />
+      </div>}>
         <Outlet />
       </Suspense>
     </>
