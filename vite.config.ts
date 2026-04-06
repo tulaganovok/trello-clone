@@ -10,6 +10,7 @@ import netlify from '@netlify/vite-plugin-tanstack-start'
 import neon from './neon-vite-plugin.ts'
 
 const config = defineConfig({
+  base: '/',
   plugins: [
     devtools(),
     neon,
