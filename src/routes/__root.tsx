@@ -23,10 +23,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         name: 'viewport',
         content: 'width=device-width, initial-scale=1',
       },
-      {
-        title:
-          'Trello',
-      },
+      { title: 'Trello' },
     ],
     links: [
       {
@@ -36,7 +33,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     ],
   }),
   shellComponent: RootDocument,
-  notFoundComponent:NotFound
+  notFoundComponent: NotFound,
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {

@@ -11,7 +11,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as RssDotxmlRouteImport } from './routes/rss[.]xml'
 import { Route as marketingRouteRouteImport } from './routes/(marketing)/route'
 import { Route as dashboardRouteRouteImport } from './routes/(dashboard)/route'
 import { Route as authRouteRouteImport } from './routes/(auth)/route'
@@ -37,11 +36,6 @@ const dashboardmainBoardsLazyRouteImport = createFileRoute(
   '/(dashboard)/(main)/boards',
 )()
 
-const RssDotxmlRoute = RssDotxmlRouteImport.update({
-  id: '/rss.xml',
-  path: '/rss.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const marketingRouteRoute = marketingRouteRouteImport.update({
   id: '/(marketing)',
   getParentRoute: () => rootRouteImport,
@@ -144,7 +138,6 @@ const dashboardmainBoardsIndexRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/rss.xml': typeof RssDotxmlRoute
   '/sign-in': typeof authSignInLazyRouteWithChildren
   '/sign-up': typeof authSignUpLazyRouteWithChildren
   '/': typeof marketingIndexRoute
@@ -160,7 +153,6 @@ export interface FileRoutesByFullPath {
   '/board/$boardId/': typeof dashboardBoardBoardIdIndexRoute
 }
 export interface FileRoutesByTo {
-  '/rss.xml': typeof RssDotxmlRoute
   '/': typeof marketingIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/sign-in': typeof authSignInIndexRoute
@@ -175,7 +167,6 @@ export interface FileRoutesById {
   '/(auth)': typeof authRouteRouteWithChildren
   '/(dashboard)': typeof dashboardRouteRouteWithChildren
   '/(marketing)': typeof marketingRouteRouteWithChildren
-  '/rss.xml': typeof RssDotxmlRoute
   '/(dashboard)/(main)': typeof dashboardmainRouteRouteWithChildren
   '/(auth)/sign-in': typeof authSignInLazyRouteWithChildren
   '/(auth)/sign-up': typeof authSignUpLazyRouteWithChildren
@@ -194,7 +185,6 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/rss.xml'
     | '/sign-in'
     | '/sign-up'
     | '/'
@@ -210,7 +200,6 @@ export interface FileRouteTypes {
     | '/board/$boardId/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/rss.xml'
     | '/'
     | '/api/auth/$'
     | '/sign-in'
@@ -224,7 +213,6 @@ export interface FileRouteTypes {
     | '/(auth)'
     | '/(dashboard)'
     | '/(marketing)'
-    | '/rss.xml'
     | '/(dashboard)/(main)'
     | '/(auth)/sign-in'
     | '/(auth)/sign-up'
@@ -245,19 +233,11 @@ export interface RootRouteChildren {
   authRouteRoute: typeof authRouteRouteWithChildren
   dashboardRouteRoute: typeof dashboardRouteRouteWithChildren
   marketingRouteRoute: typeof marketingRouteRouteWithChildren
-  RssDotxmlRoute: typeof RssDotxmlRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/rss.xml': {
-      id: '/rss.xml'
-      path: '/rss.xml'
-      fullPath: '/rss.xml'
-      preLoaderRoute: typeof RssDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/(marketing)': {
       id: '/(marketing)'
       path: ''
@@ -504,7 +484,6 @@ const rootRouteChildren: RootRouteChildren = {
   authRouteRoute: authRouteRouteWithChildren,
   dashboardRouteRoute: dashboardRouteRouteWithChildren,
   marketingRouteRoute: marketingRouteRouteWithChildren,
-  RssDotxmlRoute: RssDotxmlRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport
