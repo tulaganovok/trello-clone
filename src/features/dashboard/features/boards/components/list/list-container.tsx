@@ -16,9 +16,11 @@ import CardModal from '../card/card-modal'
 
 interface ListContainerProps {
   lists: ListWithCards[]
+  setIsDragging: (isDragging: boolean) => void
 }
 
-export default function ListContainer({ lists }: ListContainerProps) {
+
+export default function ListContainer({ lists, setIsDragging }: ListContainerProps) {
   const [orderedLists, setOrderedLists] = useState<ListWithCards[]>([])
   const queryClient = useQueryClient()
   const { boardId } = Route.useParams()
@@ -140,7 +142,10 @@ export default function ListContainer({ lists }: ListContainerProps) {
 
   return (
     <>
-      <DragDropContext onDragEnd={onDragEnd}>
+      <DragDropContext onDragStart={() => setIsDragging(true)} onDragEnd={result => {
+        setIsDragging(false)
+        onDragEnd(result)
+      }}>
         <div className={cn('transition-opacity')}>
           <Droppable
             droppableId="lists"
