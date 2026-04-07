@@ -10,7 +10,7 @@ export default function RecentlyViewed() {
 
   const { isLoading, data: boards } = useQuery({
     queryKey: ['recently-viewed'],
-    queryFn: getRecentlyViewedBoards,
+    queryFn: ()=>getRecentlyViewedBoards(),
   })
 
   return (
