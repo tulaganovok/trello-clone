@@ -27,12 +27,14 @@ export default function RecentlyViewed() {
           ))}
 
         {!isLoading &&
-          boards && boards.length > 0 ?
-          boards.map((board) => <BoardCard key={board.id} board={board} />) :
-          <div className='col-span-2 md:col-span-4 py-12'>
-            <h4 className='text-sm text-muted-foreground text-center'>No recently viewed boards yet.</h4>
-          </div>
+          boards && boards.length > 0 &&
+          boards.map((board) => <BoardCard key={board.id} board={board} />)
         }
+
+        {!isLoading &&
+          boards && boards.length === 0 && <div className='col-span-2 md:col-span-4 py-12'>
+            <h4 className='text-sm text-muted-foreground text-center'>No recently viewed boards yet.</h4>
+          </div>}
       </div>
     </div>
   )
