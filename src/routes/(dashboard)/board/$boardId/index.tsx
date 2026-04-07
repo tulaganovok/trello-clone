@@ -4,7 +4,7 @@ import BoardNavbar from '#/features/dashboard/features/boards/components/board-n
 import ListContainer from '#/features/dashboard/features/boards/components/list/list-container'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { useServerFn } from '@tanstack/react-start'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { getSessionFn } from '#/features/dashboard/functions/session'
 import { useDragScroll } from '#/features/dashboard/features/boards/hooks/use-drag-scroll'
 
@@ -16,8 +16,7 @@ function BoardIdPage() {
   const { boardId } = Route.useParams()
   const getBoardById = useServerFn(() => getBoardByIdFn({ data: { boardId } }))
   const getSession = useServerFn(() => getSessionFn())
-  const [isDragging, setIsDragging]=useState(false)
-  const { ref, handlers } = useDragScroll({disabled:isDragging})
+  const { ref, handlers } = useDragScroll()
 
 
   const { data: board } = useSuspenseQuery({
@@ -49,7 +48,6 @@ function BoardIdPage() {
           {...handlers} className="p-4 h-full overflow-x-auto">
           <ListContainer
             lists={board.lists}
-            setIsDragging={setIsDragging}
           />
         </div>
       </main>
