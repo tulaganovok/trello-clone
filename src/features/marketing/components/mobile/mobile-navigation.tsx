@@ -1,4 +1,5 @@
 import { Button } from '#/components/ui/button'
+import { Link } from '@tanstack/react-router'
 import { ChevronRight } from 'lucide-react'
 
 export default function MobileNavigation() {
@@ -22,12 +23,20 @@ export default function MobileNavigation() {
       </div>
 
       <div className="border-t space-y-4 pt-4">
-        <Button className="w-full text-lg py-8">Get Trello for free</Button>
+        <Button className="w-full text-lg py-8" asChild>
+          <Link to='/sign-up'>
+            Get Trello for free
+          </Link>
+        </Button>
+
         <Button
           variant={'outline'}
           className="w-full text-lg border-primary py-8"
+          asChild
         >
-          Login
+          <Link to='/sign-in'>
+            Login
+          </Link>
         </Button>
       </div>
     </div>

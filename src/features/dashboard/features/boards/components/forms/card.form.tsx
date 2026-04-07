@@ -35,6 +35,7 @@ export default function CardForm({
   const textareaRef = useRef<HTMLTextAreaElement | null>(null)
   const { boardId } = Route.useParams()
   const queryClient = useQueryClient()
+  const [step, setStep] = useState(1)
 
   const cardForm = useForm({
     defaultValues: { title: '' },
@@ -53,6 +54,7 @@ export default function CardForm({
       try {
         await createCardFn({ data: { title: titleValue, listId } })
         await queryClient.invalidateQueries({ queryKey: ['board', boardId] })
+        setStep(prev => prev + 1)
         cardForm.reset()
       } catch {
         toast.error('Failed to create card')
@@ -103,7 +105,7 @@ export default function CardForm({
     if (isEditing) {
       textareaRef.current?.focus()
     }
-  }, [isEditing])
+  }, [isEditing, step])
 
   useEventListener('keydown', onEscapeListener)
   useOnClickOutside(formRef as RefObject<HTMLElement>, onCardFormBlur)
