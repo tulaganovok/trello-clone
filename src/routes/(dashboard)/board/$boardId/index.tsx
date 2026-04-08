@@ -6,7 +6,6 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 import { useServerFn } from '@tanstack/react-start'
 import { useEffect } from 'react'
 import { getSessionFn } from '#/features/dashboard/functions/session'
-import { useDragScroll } from '#/features/dashboard/features/boards/hooks/use-drag-scroll'
 
 export const Route = createFileRoute('/(dashboard)/board/$boardId/')({
   component: BoardIdPage,
@@ -16,8 +15,6 @@ function BoardIdPage() {
   const { boardId } = Route.useParams()
   const getBoardById = useServerFn(() => getBoardByIdFn({ data: { boardId } }))
   const getSession = useServerFn(() => getSessionFn())
-  const { ref, handlers } = useDragScroll()
-
 
   const { data: board } = useSuspenseQuery({
     queryKey: ['board', boardId],
@@ -44,11 +41,8 @@ function BoardIdPage() {
       />
 
       <main className="h-full relative pt-26">
-        <div ref={ref}
-          {...handlers} className="p-4 h-full overflow-x-auto">
-          <ListContainer
-            lists={board.lists}
-          />
+        <div className="p-4 h-full overflow-x-auto">
+          <ListContainer lists={board.lists} />
         </div>
       </main>
     </div>
